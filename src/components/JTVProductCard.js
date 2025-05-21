@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { CartContext } from '../stores/JTVCartStore';
 
 export default function JTVProductCard({ product }) {
-  const navigation = useNavigation();
+  const { addToCart } = useContext(CartContext);
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Detalhes', { product })}>
+    <TouchableOpacity onPress={() => addToCart(product)}>
       <View style={styles.card}>
         <Image source={product.image} style={styles.image} />
         <Text style={styles.title}>{product.title}</Text>
@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 8,
     marginBottom: 10,
-    elevation: 3, // sombra android
-    shadowColor: '#000', // sombra ios
+    elevation: 3,
+    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 2 },

@@ -15,8 +15,6 @@ export default function JTVNavigator() {
           let iconName = route.name === 'Produtos' ? 'ios-list' : 'ios-cart';
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#007AFF',
-        tabBarInactiveTintColor: 'gray',
       })}
     >
       <Tab.Screen name="Produtos" component={JTVProductListScreen} />

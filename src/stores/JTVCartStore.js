@@ -5,10 +5,44 @@ export const CartContext = createContext();
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
 
-  // Aqui você pode adicionar funções para adicionar/remover do carrinho
+  // Adiciona produto ao carrinho (incrementa quantidade se já estiver)
+  const addToCart = (product) => {
+    setCartItems(prevItems => {
+      const index = prevItems.findIndex(item => item.id === product.id);
+      if (index !== -1) {
+        const newItems = [...prevItems];
+        newItems[index].quantity += 1;
+        return newItems;
+      } else {
+        return [...prevItems, { ...product, quantity: 1 }];
+      }
+    });
+  };
+
+  // Remove 1 unidade do produto do carrinho ou remove completamente
+  const removeFromCart = (productId) => {
+    setCartItems(prevItems => {
+      const index = prevItems.findIndex(item => item.id === productId);
+      if (index !== -1) {
+        const newItems = [...prevItems];
+        if (newItems[index].quantity > 1) {
+          newItems[index].quantity -= 1;
+          return newItems;
+        } else {
+          return newItems.filter(item => item.id !== productId);
+        }
+      }
+      return prevItems;
+    });
+  };
+
+  // Calcula o valor total do carrinho
+  const getTotal = () => {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
 
   return (
-    <CartContext.Provider value={{ cartItems, setCartItems }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, getTotal }}>
       {children}
     </CartContext.Provider>
   );
